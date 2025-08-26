@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 1000px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#FFD700", "font": {"color": "white"}, "id": "urvfl_cifar.py", "label": "urvfl_cifar.py", "shape": "dot", "size": 40, "title": "File: urvfl_cifar.py", "type": "file"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "ast", "label": "ast", "shape": "dot", "size": 10, "title": "Module: ast", "type": "module"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "sys", "label": "sys", "shape": "dot", "size": 10, "title": "Module: sys", "type": "module"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "os", "label": "os", "shape": "dot", "size": 10, "title": "Module: os", "type": "module"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "importlib.util", "label": "importlib.util", "shape": "dot", "size": 10, "title": "Module: importlib.util", "type": "module"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "pyvis.network", "label": "pyvis.network", "shape": "dot", "size": 10, "title": "Module: pyvis.network", "type": "module"}, {"color": "#ADD8E6", "font": {"color": "white"}, "id": "networkx", "label": "networkx", "shape": "dot", "size": 10, "title": "Module: networkx", "type": "module"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::__init__", "label": "urvfl_cifar.py::__init__", "shape": "dot", "size": 10, "title": "Function: __init__\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::visit_Import", "label": "urvfl_cifar.py::visit_Import", "shape": "dot", "size": 10, "title": "Function: visit_Import\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::visit_ImportFrom", "label": "urvfl_cifar.py::visit_ImportFrom", "shape": "dot", "size": 10, "title": "Function: visit_ImportFrom\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::visit_FunctionDef", "label": "urvfl_cifar.py::visit_FunctionDef", "shape": "dot", "size": 10, "title": "Function: visit_FunctionDef\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::visit_Call", "label": "urvfl_cifar.py::visit_Call", "shape": "dot", "size": 10, "title": "Function: visit_Call\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::resolve_call_fqn", "label": "urvfl_cifar.py::resolve_call_fqn", "shape": "dot", "size": 10, "title": "Function: resolve_call_fqn\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::resolve_module_path", "label": "urvfl_cifar.py::resolve_module_path", "shape": "dot", "size": 10, "title": "Function: resolve_module_path\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::analyze_project", "label": "urvfl_cifar.py::analyze_project", "shape": "dot", "size": 10, "title": "Function: analyze_project\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#F08080", "font": {"color": "white"}, "id": "urvfl_cifar.py::generate_visualization", "label": "urvfl_cifar.py::generate_visualization", "shape": "dot", "size": 10, "title": "Function: generate_visualization\n(in urvfl_cifar.py)", "type": "function"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "len", "label": "len", "shape": "dot", "size": 10, "title": "External/Built-in: len", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "print", "label": "print", "shape": "dot", "size": 10, "title": "External/Built-in: print", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "CodeVisualizer", "label": "CodeVisualizer", "shape": "dot", "size": 10, "title": "External/Built-in: CodeVisualizer", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "visualizer.analyze_project", "label": "visualizer.analyze_project", "shape": "dot", "size": 10, "title": "External/Built-in: visualizer.analyze_project", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "visualizer.generate_visualization", "label": "visualizer.generate_visualization", "shape": "dot", "size": 10, "title": "External/Built-in: visualizer.generate_visualization", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "os.path.basename", "label": "os.path.basename", "shape": "dot", "size": 10, "title": "External/Built-in: os.path.basename", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "self.graph.has_node", "label": "self.graph.has_node", "shape": "dot", "size": 10, "title": "External/Built-in: self.graph.has_node", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "self.graph.add_node", "label": "self.graph.add_node", "shape": "dot", "size": 10, "title": "External/Built-in: self.graph.add_node", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "os.path.abspath", "label": "os.path.abspath", "shape": "dot", "size": 10, "title": "External/Built-in: os.path.abspath", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "os.path.dirname", "label": "os.path.dirname", "shape": "dot", "size": 10, "title": "External/Built-in: os.path.dirname", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "nx.DiGraph", "label": "nx.DiGraph", "shape": "dot", "size": 10, "title": "External/Built-in: nx.DiGraph", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "set", "label": "set", "shape": "dot", "size": 10, "title": "External/Built-in: set", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "self.visualizer.resolve_module_path", "label": "self.visualizer.resolve_module_path", "shape": "dot", "size": 10, "title": "External/Built-in: self.visualizer.resolve_module_path", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "Symbol", "label": "Symbol", "shape": "dot", "size": 10, "title": "External/Built-in: Symbol", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "self.graph.add_edge", "label": "self.graph.add_edge", "shape": "dot", "size": 10, "title": "External/Built-in: self.graph.add_edge", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "self.generic_visit", "label": "self.generic_visit", "shape": "dot", "size": 10, "title": "External/Built-in: self.generic_visit", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "self.resolve_call_fqn", "label": "self.resolve_call_fqn", "shape": "dot", "size": 10, "title": "External/Built-in: self.resolve_call_fqn", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "isinstance", "label": "isinstance", "shape": "dot", "size": 10, "title": "External/Built-in: isinstance", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "parts.insert", "label": "parts.insert", "shape": "dot", "size": 10, "title": "External/Built-in: parts.insert", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "list", "label": "list", "shape": "dot", "size": 10, "title": "External/Built-in: list", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "sys.path.insert", "label": "sys.path.insert", "shape": "dot", "size": 10, "title": "External/Built-in: sys.path.insert", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "importlib.util.find_spec", "label": "importlib.util.find_spec", "shape": "dot", "size": 10, "title": "External/Built-in: importlib.util.find_spec", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "spec.origin.startswith", "label": "spec.origin.startswith", "shape": "dot", "size": 10, "title": "External/Built-in: spec.origin.startswith", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "spec.origin.endswith", "label": "spec.origin.endswith", "shape": "dot", "size": 10, "title": "External/Built-in: spec.origin.endswith", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "queue.pop", "label": "queue.pop", "shape": "dot", "size": 10, "title": "External/Built-in: queue.pop", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "os.path.exists", "label": "os.path.exists", "shape": "dot", "size": 10, "title": "External/Built-in: os.path.exists", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "processed_for_discovery.add", "label": "processed_for_discovery.add", "shape": "dot", "size": 10, "title": "External/Built-in: processed_for_discovery.add", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "open", "label": "open", "shape": "dot", "size": 10, "title": "External/Built-in: open", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "ast.parse", "label": "ast.parse", "shape": "dot", "size": 10, "title": "External/Built-in: ast.parse", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "f.read", "label": "f.read", "shape": "dot", "size": 10, "title": "External/Built-in: f.read", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "ast.walk", "label": "ast.walk", "shape": "dot", "size": 10, "title": "External/Built-in: ast.walk", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "self.resolve_module_path", "label": "self.resolve_module_path", "shape": "dot", "size": 10, "title": "External/Built-in: self.resolve_module_path", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "files_to_process.add", "label": "files_to_process.add", "shape": "dot", "size": 10, "title": "External/Built-in: files_to_process.add", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "queue.append", "label": "queue.append", "shape": "dot", "size": 10, "title": "External/Built-in: queue.append", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "InternalProjectVisitor", "label": "InternalProjectVisitor", "shape": "dot", "size": 10, "title": "External/Built-in: InternalProjectVisitor", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "visitor.visit", "label": "visitor.visit", "shape": "dot", "size": 10, "title": "External/Built-in: visitor.visit", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "Network", "label": "Network", "shape": "dot", "size": 10, "title": "External/Built-in: Network", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "net.from_nx", "label": "net.from_nx", "shape": "dot", "size": 10, "title": "External/Built-in: net.from_nx", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "net.set_options", "label": "net.set_options", "shape": "dot", "size": 10, "title": "External/Built-in: net.set_options", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "os.path.splitext", "label": "os.path.splitext", "shape": "dot", "size": 10, "title": "External/Built-in: os.path.splitext", "type": "external_func"}, {"color": "#D3D3D3", "font": {"color": "white"}, "id": "net.show", "label": "net.show", "shape": "dot", "size": 10, "title": "External/Built-in: net.show", "type": "external_func"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "urvfl_cifar.py", "label": "imports", "to": "ast", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "imports", "to": "sys", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "imports", "to": "os", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "imports", "to": "importlib.util", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "imports from", "to": "pyvis.network", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "imports", "to": "networkx", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::__init__", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::visit_Import", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::visit_ImportFrom", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::visit_FunctionDef", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::visit_Call", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::resolve_call_fqn", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::resolve_module_path", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::analyze_project", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "defines", "to": "urvfl_cifar.py::generate_visualization", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "calls", "to": "len", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "calls", "to": "print", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "calls", "to": "CodeVisualizer", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "calls", "to": "visualizer.analyze_project", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py", "label": "calls", "to": "visualizer.generate_visualization", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::__init__", "label": "calls", "to": "os.path.basename", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::__init__", "label": "calls", "to": "self.graph.has_node", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::__init__", "label": "calls", "to": "self.graph.add_node", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::__init__", "label": "calls", "to": "os.path.abspath", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::__init__", "label": "calls", "to": "os.path.dirname", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::__init__", "label": "calls", "to": "nx.DiGraph", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::__init__", "label": "calls", "to": "set", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_Import", "label": "calls", "to": "self.visualizer.resolve_module_path", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_Import", "label": "calls", "to": "Symbol", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_ImportFrom", "label": "calls", "to": "self.visualizer.resolve_module_path", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_ImportFrom", "label": "calls", "to": "os.path.basename", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_ImportFrom", "label": "calls", "to": "self.graph.has_node", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_ImportFrom", "label": "calls", "to": "self.graph.add_edge", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_ImportFrom", "label": "calls", "to": "Symbol", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_FunctionDef", "label": "calls", "to": "self.graph.add_node", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_FunctionDef", "label": "calls", "to": "self.graph.add_edge", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_FunctionDef", "label": "calls", "to": "self.generic_visit", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_Call", "label": "calls", "to": "self.resolve_call_fqn", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_Call", "label": "calls", "to": "self.graph.add_edge", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::visit_Call", "label": "calls", "to": "self.generic_visit", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_call_fqn", "label": "calls", "to": "isinstance", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_call_fqn", "label": "calls", "to": "os.path.basename", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_call_fqn", "label": "calls", "to": "parts.insert", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_module_path", "label": "calls", "to": "os.path.dirname", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_module_path", "label": "calls", "to": "list", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_module_path", "label": "calls", "to": "sys.path.insert", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_module_path", "label": "calls", "to": "importlib.util.find_spec", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_module_path", "label": "calls", "to": "spec.origin.startswith", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_module_path", "label": "calls", "to": "spec.origin.endswith", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::resolve_module_path", "label": "calls", "to": "os.path.abspath", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "set", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "queue.pop", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "os.path.exists", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "processed_for_discovery.add", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "open", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "ast.parse", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "f.read", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "ast.walk", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "isinstance", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "self.resolve_module_path", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "files_to_process.add", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "queue.append", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "print", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "os.path.basename", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "InternalProjectVisitor", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::analyze_project", "label": "calls", "to": "visitor.visit", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::generate_visualization", "label": "calls", "to": "print", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::generate_visualization", "label": "calls", "to": "Network", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::generate_visualization", "label": "calls", "to": "net.from_nx", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::generate_visualization", "label": "calls", "to": "net.set_options", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::generate_visualization", "label": "calls", "to": "os.path.basename", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::generate_visualization", "label": "calls", "to": "os.path.splitext", "width": 1}, {"arrows": "to", "from": "urvfl_cifar.py::generate_visualization", "label": "calls", "to": "net.show", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"font": {"size": 20, "strokeWidth": 2}, "scaling": {"min": 20, "max": 50}, "size": 35}, "edges": {"width": 2, "font": {"size": 14, "align": "top", "strokeWidth": 3}, "arrows": {"to": {"enabled": true, "scaleFactor": 1.2}}}, "physics": {"barnesHut": {"gravitationalConstant": -60000, "centralGravity": 0.1, "springLength": 300}, "solver": "barnesHut"}, "interaction": {"hover": true, "navigationButtons": true, "keyboard": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,4 @@
+tqdm #==4.65.0
+numpy #==1.23.5
+fvcore #https://github.com/facebookresearch/fvcore
+timm ==0.9.16 

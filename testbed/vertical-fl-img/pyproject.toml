@@ -5,15 +5,16 @@ build-backend = "hatchling.build"
 [project]
 name = "vertical-fl"
 version = "1.0.0"
-description = "PyTorch Vertical FL with Flower"
+description = "PyTorch Vertical FL with Flower for Image Classification"
 license = "Apache-2.0"
 dependencies = [
     "flwr[simulation]>=1.20.0",
     "flwr-datasets>=0.5.0",
     "pandas==2.2.3",
     "numpy>=1.26.0",
-    "scikit-learn==1.5.0",
-    "torch==2.5.1",
+    "scikit-learn==1.5.1",
+    "torch==2.3.1",
+    "torchvision==0.18.1",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -27,11 +28,16 @@ serverapp = "vertical_fl.server_app:app"
 clientapp = "vertical_fl.client_app:app"
 
 [tool.flwr.app.config]
-num-server-rounds = 3
-learning-rate = 0.1
+# CIFAR-10 학습 데이터는 50,000개. 배치 크기 64로 1 에포크를 돌려면 782 라운드가 필요.
+# 2 에포크를 위해 약 1500 라운드로 설정
+num-server-rounds = 1500
+learning-rate = 0.01      # 미니 배치에 맞는 일반적인 학습률로 복원
+model = "CNN"
+dataset = "CIFAR10"
+batch-size = 64           # 미니 배치 크기 추가
 
 [tool.flwr.federations]
 default = "local-simulation"
 
 [tool.flwr.federations.local-simulation]
-options.num-supernodes = 3 # Note that this example will require changes to how VFL is implemented
+options.num-supernodes = 3 # This must match NUM_VERTICAL_SPLITS in task.py

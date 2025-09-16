@@ -68,7 +68,7 @@ def main():
     x_test_triggered = apply_trigger(x_test_not_target, final_trigger)
     
     # 트리거가 적용된 이미지에 대한 모델 예측
-    predictions = model.predict(x_test_triggered, batch_size=128, verbose=0)
+    predictions = model.predict(x_test_triggered, batch_size=16, verbose=0)
     predicted_labels = np.argmax(predictions, axis=1)
     
     # 모델이 타겟 레이블로 잘못 예측한 비율 계산 (ASR)

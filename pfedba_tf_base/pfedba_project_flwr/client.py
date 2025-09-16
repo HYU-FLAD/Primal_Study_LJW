@@ -1,4 +1,5 @@
 import tensorflow as tf
+from tensorflow.keras import backend as K
 import flwr as fl
 import numpy as np
 from utils import apply_trigger # 이전 단계에서 작성한 유틸리티
@@ -15,8 +16,11 @@ class BenignClient(fl.client.NumPyClient):
 
     def fit(self, parameters, config):
         self.model.set_weights(parameters)
-        history = self.model.fit(self.x_train, self.y_train, epochs=2, batch_size=64, verbose=0)
+        history = self.model.fit(self.x_train, self.y_train, epochs=2, batch_size=16, verbose=0)
         accuracy = history.history["accuracy"][-1]
+
+        K.clear_session()
+
         return self.model.get_weights(), len(self.x_train), {"accuracy": accuracy}
 
 
@@ -98,7 +102,7 @@ class MaliciousClient(fl.client.NumPyClient):
         y_poisoned[poison_indices] = self.target_label
 
         print("  - Training local model on poisoned data...")
-        history = self.model.fit(x_poisoned, y_poisoned, epochs=2, batch_size=64, verbose=0)
+        history = self.model.fit(x_poisoned, y_poisoned, epochs=2, batch_size=16, verbose=0)
         accuracy = history.history["accuracy"][-1]
         return self.model.get_weights(), len(self.x_train), {"accuracy": accuracy}
     

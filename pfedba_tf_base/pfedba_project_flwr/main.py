@@ -34,22 +34,22 @@ NUM_ROUNDS = 20
 def client_fn(cid: str) -> fl.client.Client:
     """
     클라이언트 생성 함수.
-    메모리 효율성을 위해 각 클라이언트 프로세스 내부에서 데이터를 로드합니다.
-    (Context API 호환성 문제를 피하기 위해 cid를 직접 받는 이전 방식을 사용합니다.)
+    메모리 효율성을 위해 각 클라이언트 프로세스 내부에서 데이터를 로드
+    (Context API 호환성 문제를 피하기 위해 cid를 직접 받는 이전 방식을 사용)
     """
-    # 1. 이 함수 내부에서 데이터를 로드합니다.
+    # 1. 이 함수 내부에서 데이터를 로드
     (x_train, y_train), _ = tf.keras.datasets.cifar10.load_data()
     x_train = x_train.astype("float32") / 255.0
 
-    # 2. 파티셔너를 사용하여 이 클라이언트의 데이터 인덱스를 결정합니다.
+    # 2. 파티셔너를 사용하여 이 클라이언트의 데이터 인덱스를 결정
     partitioner = DirichletPartitioner(num_partitions=NUM_CLIENTS, alpha=0.5, seed=42)
     partitioner.partition(y_train)
     
-    # 3. 원래 방식대로 cid를 직접 사용합니다.
+    # 3. 원래 방식대로 cid를 직접 사용
     client_id = int(cid)
     client_indices = partitioner.partitions[client_id]
 
-    # 4. 해당 인덱스의 데이터만 사용합니다.
+    # 4. 해당 인덱스의 데이터만 사용
     x_train_partition = x_train[client_indices]
     y_train_partition = y_train[client_indices]
 

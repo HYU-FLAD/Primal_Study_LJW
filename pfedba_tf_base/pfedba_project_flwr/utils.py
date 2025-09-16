@@ -28,7 +28,7 @@ class DirichletPartitioner:
         self.partitions: List[np.ndarray] = []
 
     def partition(self, data: np.ndarray) -> None:
-        """데이터를 분할합니다."""
+        """데이터를 분할"""
         labels = data.flatten()
         num_items = len(labels)
         num_classes = len(np.unique(labels))
@@ -80,7 +80,7 @@ class DirichletPartitioner:
 
 
 def load_data(num_clients: int):
-    """CIFAR-10 데이터를 로드하고 Non-IID 환경으로 분할합니다."""
+    """CIFAR-10 데이터를 로드하고 Non-IID 환경으로 분할"""
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
     
     x_train = x_train.astype("float32") / 255.0
@@ -94,7 +94,7 @@ def load_data(num_clients: int):
 def get_model():
     """
     메모리 사용량을 줄이기 위해 MobileNetV2 대신
-    간단한 CNN 모델을 생성합니다.
+    간단한 CNN 모델을 생성
     """
     # model = tf.keras.models.Sequential([
     #     tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
@@ -123,6 +123,6 @@ def get_model():
     return model
 
 def apply_trigger(images, trigger):
-    """이미지에 학습된 트리거를 적용합니다."""
+    """이미지에 학습된 트리거를 적용"""
     triggered_images = tf.clip_by_value(images + trigger, 0.0, 1.0)
     return triggered_images

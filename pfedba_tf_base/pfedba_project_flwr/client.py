@@ -49,14 +49,23 @@ class MaliciousClient(fl.client.NumPyClient):
         return self.model.get_weights()
 
     def _generate_stealthy_trigger(self, lambda_align=0.7, steps=5):
-        """1단계: 정렬 최적화 기반 트리거 생성"""
-        num_to_poison = int(len(self.x_train) * self.poisoning_rate)
-        mal_indices = np.random.choice(len(self.x_train), num_to_poison, replace=False)
+        """1단계: 정렬 최적화 기반 트리거 생성 (메모리 최적화 버전)"""
+        
+        # ==================== 수정된 로직 ====================
+        # 전체 데이터 대신 작은 배치(예: 32개)만 사용하여 메모리 사용량 줄이기
+        # num_to_poison = int(len(self.x_train) * self.poisoning_rate)
+        batch_size_for_trigger = 32 # OOM 발생 시 이 값을 16 등으로 더 줄여보세요.
+        # =====================================================
+
+        mal_indices = np.random.choice(len(self.x_train), batch_size_for_trigger, replace=False)
         x_mal = tf.convert_to_tensor(self.x_train[mal_indices])
         y_mal_orig = tf.convert_to_tensor(self.y_train[mal_indices])
-        y_mal_target = tf.ones(shape=(num_to_poison, 1), dtype=tf.int64) * self.target_label
+        
+        # y_mal_target의 shape을 (batch_size,) 형태로 변경
+        y_mal_target = tf.ones(shape=(batch_size_for_trigger,), dtype=tf.int64) * self.target_label
 
-        print("  - Optimizing stealthy trigger...")
+        print(f"  - Optimizing stealthy trigger using a batch of {batch_size_for_trigger}...")
+        
         for step in range(steps):
             with tf.GradientTape() as tape:
                 tape.watch(self.trigger)
